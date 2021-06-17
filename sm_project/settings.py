@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-kgx6kjmd9ojg7!s@e41g&io!9q4(#wh4!9!6yyigqoae6d^r-l"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["szelbi.pythonanywhere.com"]
 
 
 # Application definition
@@ -140,8 +140,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 
-RECAPTCHA_PUBLIC_KEY = "6LfYj8AZAAAAAMrlIwR2iorH2PUEW0ceacMnA_o_"
-RECAPTCHA_PRIVATE_KEY = "6LfYj8AZAAAAAIQqqwfruiYBmDv662MFzZi8BoPN"
+RECAPTCHA_PUBLIC_KEY = "6Lf7PT0bAAAAAIrVrJq2x_dOYr9-G8lEFNF7e9Xu"
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 
 FORM_RENDERER = "django.forms.renderers.DjangoTemplates"
 
