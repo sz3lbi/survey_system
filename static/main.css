@@ -1,0 +1,14 @@
+/*
+textarea {
+  width: 100%;
+  height: 150px;
+}
+*/
+/*
+ol li {display:block;} 
+ol {list-style:none;}  
+
+ol > li:first-child {counter-reset: item;}
+ol > li {counter-increment: item;}
+ol > li:before {content:counters(item, ".") ". "; font-weight:bold;}
+*/

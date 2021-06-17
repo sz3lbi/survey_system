@@ -1,0 +1,8 @@
+{% extends "survey/survey_menu.html" %}
+
+{% block content %}
+    <h1>Głosowanie w ankiecie</h1>
+
+    <p>Aby zagłosować w ankiecie musisz przejść do podstrony jej odpowiadającej.</p>
+    <a href="{% url 'survey:choose' %}">Wybierz ankietę</a>
+{% endblock content %}

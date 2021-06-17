@@ -1,0 +1,22 @@
+{% extends "survey/survey_menu.html" %}
+
+{% block content %}
+    <h1>Wyniki ankiety</h1>
+    {% if user == response.user %}
+    <p class="lead">Wybrane przez Ciebie odpowiedzi:</p>
+    <div class="container">
+        <ul>
+            {% for response_answer in response.responseanswer_set.all %}
+            <li>
+                <b>{{ response_answer.question_answer.question }}</b>
+                <br>
+                Odpowiedź: {{ response_answer.question_answer.answer }}
+            </li>            
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <p>Ankieta została poprawnie wypełniona.</p>
+    {% endif %}
+
+{% endblock content %}

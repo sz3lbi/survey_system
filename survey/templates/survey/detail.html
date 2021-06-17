@@ -1,0 +1,50 @@
+{% extends "survey/survey_menu.html" %}
+{% load custom_template_tags %}
+
+{% block content %}
+    <h1>Wypełnianie ankiety</h1>
+
+    {% if perms.survey.view_stats %}
+    <p><a href="{% url 'survey:stats' survey.id %}">Przejdź do statystyk</a></p>
+    {% endif %}
+
+    <form action="{% url 'survey:vote' survey.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><p class="lead"><b>Tytuł:</b> {{ survey }}</p></legend>
+
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+            {% endif %}
+
+            <label for="bill-no">Numer paragonu (cyfry i litery, 8 znaków):</label>
+            <input type="text" id="bill-no" name="bill-no" maxlength="8">
+            
+            <br><br>
+
+            <ol>
+                {% for survey_question in survey.surveyquestion_set.all %}
+                <li>
+                <div class="container"> 
+                    <p>{{ survey_question.question }}</p>
+                    {% for question_answer in survey_question.question.questionanswer_set.all %}
+                        {% if survey_question.question.multiple_choice %}
+                            {% setvar "checkbox" as type %}
+                        {% else %}
+                            {% setvar "radio" as type %}
+                        {% endif %}
+                    
+                    <input type="{{ type }}" name="question{{ survey_question.question.id }}" id="q{{ survey_question.question.id }}-a{{ forloop.counter }}" value="{{ question_answer.answer.id }}">
+                    <label for="q{{ survey_question.question.id }}-a{{ forloop.counter }}">{{ question_answer.answer }}</label><br>
+                    {% endfor %}
+                {% endfor %}
+                </div>
+                </li>
+            </ol>
+            
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Wyślij</button>
+        </form>
+{% endblock content %}

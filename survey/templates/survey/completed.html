@@ -1,0 +1,22 @@
+{% extends "survey/survey_menu.html" %}
+
+{% block content %}
+    <h1>Wypełnione ankiety</h1>
+
+    <p>Poniżej znajduje się lista wypełnionych przez Ciebie ankiet. W celu przejścia do podglądu wybranych odpowiedzi, naciśnij odpowiedni odnośnik.</p>
+
+    {% if user_responses %}
+        <ol>
+        {% for response in user_responses %}
+            <li><p>
+                Nr paragonu: {{ response.bill_no }}<br>
+                Ankieta: {{ response.survey }}<br>
+                <a href="{% url 'survey:results' response.id %}">Pokaż odpowiedzi</a>
+            </p></li>
+        {% endfor %}
+        </ol> 
+    {% else %}
+        <p>Nie wypełniłeś żadnej ankiety.</p>
+    {% endif %}
+    
+{% endblock content %}

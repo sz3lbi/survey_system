@@ -1,0 +1,20 @@
+{% extends "survey/survey_menu.html" %}
+
+{% block content %}
+    <h1>Wybierz ankietę</h1>
+
+    <p>
+        Prosimy o wybranie ankiety, którą chciałbyś wypełnić.
+        Przygotuj numer paragonu.
+    </p>
+
+    {% if survey_list_name_asc %}
+    <ul>
+    {% for survey in survey_list_name_asc %}
+        <li><a href="{% url 'survey:detail' survey.id %}">{{ survey }}</a></li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>Brak dostępnych ankiet.</p>
+    {% endif %}
+{% endblock content %}

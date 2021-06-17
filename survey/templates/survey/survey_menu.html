@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block menu %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'survey:home' %}">Ocena satysfakcji klientów</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'survey:choose' %}">Wybierz ankietę</a>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'survey:completed' %}">Wypełnione ankiety</a>
+    </li>
+
+        {% if perms.survey.view_list %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'survey:list' %}">Lista ankiet</a>
+        </li>
+        {% endif %}
+    {% endif %}
+{% endblock menu %}

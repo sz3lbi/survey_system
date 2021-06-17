@@ -1,0 +1,52 @@
+{% extends "survey/survey_menu.html" %}
+
+{% block content %}
+    <h1>Lista ankiet</h1>
+
+    <p>Kliknij w tytuł ankiety, aby wysunąć listę pytań wraz z odpowiedziami.</p>
+
+    {% if survey_list_id_asc %}
+        {% for survey in survey_list_id_asc %}
+        <details>
+            <summary>{{ survey }}</summary>
+
+            {% if perms.survey.view_stats %}
+            <p><a href="{% url 'survey:stats' survey.id %}">Przejdź do statystyk</a></p>
+            {% endif %}
+
+            <ol>
+                {% for survey_question in survey.surveyquestion_set.all %}
+                <li>{{ survey_question.question }}</li>
+                <ul>
+                    {% for question_answer in survey_question.question.questionanswer_set.all %}
+                    <li>{{ question_answer.answer }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </ol>
+        </details>        
+        {% endfor %}
+    {% else %}
+        <p>Brak dostępnych ankiet.</p>
+    {% endif %}
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var detailsList = document.getElementsByTagName('details');
+
+        for (const detailsElement of detailsList) {
+            detailsElement.addEventListener("toggle", function(){
+                var summariesList = detailsElement.getElementsByTagName('summary');
+                for (const summaryElement of summariesList) {
+                    if (detailsElement.open) {
+                        summaryElement.style = "font-weight:bold;"
+                    } else {
+                        summaryElement.style = "font-weight:normal;"
+                    }
+                }
+            }); 
+        }
+    });
+    </script>
+    
+{% endblock content %}
