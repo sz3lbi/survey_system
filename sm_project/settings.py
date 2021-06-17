@@ -150,3 +150,8 @@ USE_DJANGO_JQUERY = True
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOCALE_PATHS = (BASE_DIR / "locale",)
+
+try:
+    from .local import *
+except ImportError:
+    print("In production")

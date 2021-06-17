@@ -134,3 +134,7 @@ dmypy.json
 
 # Local History for Visual Studio Code
 .history/
+
+
+# custom files
+local.py
