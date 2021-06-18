@@ -11,7 +11,7 @@
 
     <h1>Statystyki ankiety</h1>
     <p class="lead"><b>Tytuł:</b> {{ survey }}</p>
-    <div class="container" id="chart-container" style="width: 600px; height: 600px;">
+    <div class="container" id="chart-container" style="max-width: 600px; max-height: 600px;">
         <script type="text/javascript">
             const borderWidth = 1;
             const colorScale = d3.interpolateWarm;
@@ -58,33 +58,43 @@
                 ]
             };
 
-            const config{{ forloop.counter }} = {
-                type: 'pie',
-                data: data{{ forloop.counter }},
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '{{ survey_question.question }}'
+            if (!Array.isArray(data{{ forloop.counter }}.datasets[0].data) || !data{{ forloop.counter }}.datasets[0].data.length) {
+                var alertDiv = $('<div/>')
+                    .attr({id: "chart{{ forloop.counter }}-alert", role: "alert"})
+                    .addClass("alert alert-dark")
+                    .html("<b>{{ survey_question.question }}</b><br>Brak danych do wyświetlenia na wykresie.")
+
+                $("#chart{{ forloop.counter }}-canvas").replaceWith(alertDiv);
+            } else {
+
+                const config{{ forloop.counter }} = {
+                    type: 'pie',
+                    data: data{{ forloop.counter }},
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '{{ survey_question.question }}'
+                            },
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
                         },
-                        legend: {
-                            display: true,
-                            position: 'top',
-                        },
+                        animation: {
+                            onComplete: function() {
+                                var base64 = this.toBase64Image();
+                                $("#chart{{ forloop.counter }}-url").attr("href", base64).removeClass("disabled");
+                            }
+                        },    
                     },
-                    animation: {
-                        onComplete: function() {
-                            var base64 = this.toBase64Image();
-                            $("#chart{{ forloop.counter }}-url").attr("href", base64).removeClass("disabled");
-                        }
-                    },    
-                },
-            };
-            $( document ).ready(function() {
-                var ctx = $("#chart{{ forloop.counter }}-canvas").get(0).getContext("2d");
-                new Chart(ctx, config{{ forloop.counter }});
-            });
+                };
+                $( document ).ready(function() {
+                    var ctx = $("#chart{{ forloop.counter }}-canvas").get(0).getContext("2d");
+                    new Chart(ctx, config{{ forloop.counter }});
+                });
+            }            
         </script>
         </p>
         {% endfor %}

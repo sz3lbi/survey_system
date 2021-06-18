@@ -138,8 +138,6 @@ def stats(request, survey_id):
     #     respondents_particulars=True
     # )
 
-    # survey_respondents_particulars_questions = []
-
     for response in survey.response_set.all():
         for response_answer in response.responseanswer_set.all():
             filtered_stats_list = [
@@ -158,7 +156,6 @@ def stats(request, survey_id):
 
     context = {
         "survey": survey,
-        # "stats_dict": stats_dict,
         "stats_list": stats_list,
     }
 
