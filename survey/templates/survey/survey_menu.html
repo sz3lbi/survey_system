@@ -13,7 +13,7 @@
         <a class="nav-link" href="{% url 'survey:completed' %}">Wypełnione ankiety</a>
     </li>
 
-        {% if perms.survey.view_list %}
+        {% if perms.survey.view %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'survey:list' %}">Lista ankiet</a>
         </li>

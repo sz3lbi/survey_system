@@ -23,7 +23,7 @@ def home(request):
 
 
 @login_required
-@permission_required("survey.view_list", raise_exception=True)
+@permission_required("survey.view", raise_exception=True)
 def list(request):
     context = {
         "survey_list_id_asc": Survey.objects.order_by("id").all(),
@@ -168,7 +168,10 @@ def stats(request, survey_id):
                 )
 
                 for question_answer in rp_question_answers:
-                    if response_answer.question_answer != question_answer:
+                    if (
+                        response_answer.question_answer.question
+                        != question_answer.question
+                    ):
                         filtered_stats_list.append(
                             QuestionStats(
                                 question_answer=response_answer.question_answer,
@@ -189,9 +192,38 @@ def stats(request, survey_id):
                         ):
                             question_stats.count += 1
 
+    for qs in stats_list:
+        print(qs)
+
+    titles = []
+    labels_set = []
+    data_set = []
+
+    survey_question_set = survey.surveyquestion_set.all()
+
+    for survey_question in survey_question_set:
+        labels = []
+        data = []
+
+        for question_stats in stats_list:
+            if survey_question.question == question_stats.question_answer.question:
+                if question_stats.reference_qa is None:
+                    labels.append(question_stats.question_answer.answer.text)
+                    data.append(question_stats.count)
+                else:
+                    pass
+
+        if labels and data:
+            titles.append(survey_question.question)
+            labels_set.append(labels)
+            data_set.append(data)
+
+    zipped_data = zip(titles, labels_set, data_set)
+
     context = {
-        "survey": survey,
-        "stats_list": stats_list,
+        "survey_name": survey.name,
+        "max_len": len(max(data_set, key=len)),
+        "zipped_data": zipped_data,
     }
 
     return render(request, "survey/stats.html", context)

@@ -9,10 +9,6 @@ class Survey(models.Model):
     class Meta:
         permissions = (
             (
-                "view_list",
-                _("Can see survey list \w questions and available answers"),
-            ),
-            (
                 "view_stats",
                 _("Can see statistics on surveys"),
             ),
@@ -23,7 +19,7 @@ class Survey(models.Model):
 
 
 class Question(models.Model):
-    question = models.CharField(max_length=64, unique=True)
+    text = models.CharField(max_length=64, unique=True)
     multiple_choice = models.BooleanField(
         default=False, null=False, verbose_name=_("Multiple choice")
     )
@@ -32,7 +28,7 @@ class Question(models.Model):
     )
 
     def __str__(self):
-        return self.question
+        return self.text
 
 
 class SurveyQuestion(models.Model):
@@ -44,10 +40,10 @@ class SurveyQuestion(models.Model):
 
 
 class Answer(models.Model):
-    answer = models.CharField(max_length=16, unique=True)
+    text = models.CharField(max_length=16, unique=True)
 
     def __str__(self):
-        return self.answer
+        return self.text
 
 
 class QuestionAnswer(models.Model):

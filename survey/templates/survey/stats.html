@@ -10,8 +10,11 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
     <h1>Statystyki ankiety</h1>
-    <p class="lead"><b>Tytuł:</b> {{ survey }}</p>
+    <p class="lead"><b>Tytuł:</b> {{ survey_name }}</p>
     <div class="container" id="chart-container" style="max-width: 600px; max-height: 600px;">
+    {% for title, labels, data in zipped_data %}
+        {% if forloop.first %}
+        <!-- Charts config -->
         <script type="text/javascript">
             const borderWidth = 1;
             const colorScale = d3.interpolateWarm;
@@ -21,7 +24,7 @@
                 useEndAsStart: false,
             }; 
 
-            var rgb_colors = interpolateColors({{ survey.surveyquestion_set.all|length }}, colorScale, colorRangeInfo);
+            var rgb_colors = interpolateColors({{ max_len }}, colorScale, colorRangeInfo);
             var rgba_colors = [];
 
             for (let color of rgb_colors) {
@@ -31,76 +34,52 @@
                 rgba_colors.push(new_color);
             }
         </script>
-
-        {% for survey_question in survey.surveyquestion_set.all %}
-        <p>
-        <canvas id="chart{{ forloop.counter }}-canvas"></canvas>
-        <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter }}-url">Pobierz wykres w PNG</a>
-        
-        <script type="text/javascript">
-            const data{{ forloop.counter }} = {
-                labels: [
-                    {% for question_stats in stats_list %}
-                        {% if question_stats.reference_qa is None and survey_question.question == question_stats.question_answer.question %}
-                        '{{ question_stats.question_answer.answer }}',
-                        {% endif %}
-                    {% endfor %}
-                ],
-                datasets: [
-                    {
-                    data: [
-                    {% for question_stats in stats_list %}
-                        {% if question_stats.reference_qa is None and survey_question.question == question_stats.question_answer.question %}
-                            {{ question_stats.count }},
-                        {% endif %}
-                    {% endfor %}
-                    ],
-                    borderColor: rgb_colors,
-                    borderWidth: borderWidth,
-                    backgroundColor: rgba_colors,
-                    },
-                ]
-            };
-
-            if (!Array.isArray(data{{ forloop.counter }}.datasets[0].data) || !data{{ forloop.counter }}.datasets[0].data.length) {
-                var alertDiv = $('<div/>')
-                    .attr({id: "chart{{ forloop.counter }}-alert", role: "alert"})
-                    .addClass("alert alert-dark")
-                    .html("<b>{{ survey_question.question }}</b><br>Brak danych do wyświetlenia na wykresie.")
-
-                $("#chart{{ forloop.counter }}-canvas").replaceWith(alertDiv);
-            } else {
-
-                const config{{ forloop.counter }} = {
-                    type: 'pie',
-                    data: data{{ forloop.counter }},
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: '{{ survey_question.question }}'
-                            },
-                            legend: {
-                                display: true,
-                                position: 'top',
-                            },
+        {% endif %}
+    
+    <canvas id="chart{{ forloop.counter }}-canvas"></canvas>
+    <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter }}-url">Pobierz wykres w PNG</a>
+    
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            var ctx = $("#chart{{ forloop.counter }}-canvas").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: {{ labels|safe }},
+                    datasets: [
+                        {
+                            data: {{ data|safe }},
+                            borderColor: rgb_colors,
+                            borderWidth: borderWidth,
+                            backgroundColor: rgba_colors,
                         },
-                        animation: {
-                            onComplete: function() {
-                                var base64 = this.toBase64Image();
-                                $("#chart{{ forloop.counter }}-url").attr("href", base64).removeClass("disabled");
-                            }
-                        },    
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '{{ title|safe }}'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
                     },
-                };
-                $( document ).ready(function() {
-                    var ctx = $("#chart{{ forloop.counter }}-canvas").get(0).getContext("2d");
-                    new Chart(ctx, config{{ forloop.counter }});
-                });
-            }            
-        </script>
-        </p>
-        {% endfor %}
+                    animation: {
+                        onComplete: function() {
+                            var base64 = this.toBase64Image();
+                            $("#chart{{ forloop.counter }}-url").attr("href", base64).removeClass("disabled");
+                        }
+                    },    
+                },
+            });
+        });
+                    
+    </script>
+    {% empty %}
+    <div class="alert alert-dark" role="alert"><b>Brak danych do przedstawienia na wykresach.</b><br>Brak odpowiedzi na wybraną ankietę.</div>
+    {% endfor %}
     </div>
 {% endblock content %}
