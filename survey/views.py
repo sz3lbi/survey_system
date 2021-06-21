@@ -192,9 +192,6 @@ def stats(request, survey_id):
                         ):
                             question_stats.count += 1
 
-    for qs in stats_list:
-        print(qs)
-
     titles = []
     labels_set = []
     data_set = []

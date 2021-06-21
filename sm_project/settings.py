@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = ["szelbi.pythonanywhere.com"]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost, 127.0.0.1", cast=Csv())
 
 
 # Application definition
@@ -134,22 +135,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "login"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_HOST_USER = os.getenv("EMAIL_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASS")
-EMAIL_USE_TLS = True
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_HOST_USER = config("EMAIL_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_PASS")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 
-RECAPTCHA_PUBLIC_KEY = "6Lf7PT0bAAAAAIrVrJq2x_dOYr9-G8lEFNF7e9Xu"
-RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY")
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 FORM_RENDERER = "django.forms.renderers.DjangoTemplates"
 LOCALE_PATHS = (BASE_DIR / "locale",)
-
-# leave at the end
-try:
-    from .local import *
-except ImportError:
-    print("In production")
