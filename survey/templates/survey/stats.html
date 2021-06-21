@@ -40,16 +40,20 @@
         <script type="text/javascript">
             const data{{ forloop.counter }} = {
                 labels: [
-                    {% for question_stats in stats_list %}{% if survey_question.question == question_stats.question_answer.question %}
-                    '{{ question_stats.question_answer.answer }}',
-                    {% endif %}{% endfor %}
+                    {% for question_stats in stats_list %}
+                        {% if question_stats.reference_qa is None and survey_question.question == question_stats.question_answer.question %}
+                        '{{ question_stats.question_answer.answer }}',
+                        {% endif %}
+                    {% endfor %}
                 ],
                 datasets: [
                     {
                     data: [
-                    {% for question_stats in stats_list %}{% if survey_question.question == question_stats.question_answer.question %}
-                        {{ question_stats.count }},
-                    {% endif %}{% endfor %}
+                    {% for question_stats in stats_list %}
+                        {% if question_stats.reference_qa is None and survey_question.question == question_stats.question_answer.question %}
+                            {{ question_stats.count }},
+                        {% endif %}
+                    {% endfor %}
                     ],
                     borderColor: rgb_colors,
                     borderWidth: borderWidth,

@@ -5,11 +5,17 @@ from django.urls import reverse
 from django.db.utils import IntegrityError
 from django.views import generic
 
-from .models import Question, QuestionAnswer, Response, ResponseAnswer, Survey
+from .models import (
+    Question,
+    QuestionAnswer,
+    Response,
+    ResponseAnswer,
+    Survey,
+    SurveyQuestion,
+)
 
 import re
 from dataclasses import dataclass
-from collections import defaultdict
 
 
 def home(request):
@@ -126,33 +132,62 @@ def completed(request):
 def stats(request, survey_id):
     survey = get_object_or_404(Survey, pk=survey_id)
 
-    stats_list = []
-
     @dataclass
     class QuestionStats:
         question_answer: QuestionAnswer
-        reference_question_answer: QuestionAnswer = None
-        count: int = 1
+        reference_qa: QuestionAnswer = None
+        count: int = 0
 
-    # respondents_particulars_questions = Question.objects.filter(
-    #     respondents_particulars=True
-    # )
+    respondents_particulars_questions = Question.objects.filter(
+        respondents_particulars=True
+    )
+    survey_sqs = SurveyQuestion.objects.filter(survey=survey)
+
+    rp_question_answers = []
+
+    for survey_question in survey_sqs:
+        if survey_question.question in respondents_particulars_questions:
+            for question_answer in survey_question.question.questionanswer_set.all():
+                rp_question_answers.append(question_answer)
+
+    stats_list = []
 
     for response in survey.response_set.all():
-        for response_answer in response.responseanswer_set.all():
+        response_answers = response.responseanswer_set.all()
+
+        for response_answer in response_answers:
             filtered_stats_list = [
                 x
                 for x in stats_list
                 if x.question_answer == response_answer.question_answer
-                and x.reference_question_answer is None
             ]
-            if filtered_stats_list:
-                for question_stats in filtered_stats_list:
-                    question_stats.count += 1
-            else:
-                stats_list.append(
+
+            if not filtered_stats_list:
+                filtered_stats_list.append(
                     QuestionStats(question_answer=response_answer.question_answer)
                 )
+
+                for question_answer in rp_question_answers:
+                    if response_answer.question_answer != question_answer:
+                        filtered_stats_list.append(
+                            QuestionStats(
+                                question_answer=response_answer.question_answer,
+                                reference_qa=question_answer,
+                            )
+                        )
+
+                stats_list.extend(filtered_stats_list)
+
+            for question_stats in filtered_stats_list:
+                if question_stats.reference_qa is None:
+                    question_stats.count += 1
+                elif question_stats.reference_qa in rp_question_answers:
+                    for response_answer2 in response_answers:
+                        if (
+                            response_answer2.question_answer
+                            == question_stats.reference_qa
+                        ):
+                            question_stats.count += 1
 
     context = {
         "survey": survey,

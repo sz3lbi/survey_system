@@ -6,12 +6,17 @@
     <p class="lead">Wybrane przez Ciebie odpowiedzi:</p>
     <div class="container">
         <ul>
-            {% for response_answer in response.responseanswer_set.all %}
-            <li>
-                <b>{{ response_answer.question_answer.question }}</b>
-                <br>
-                Odpowiedź: {{ response_answer.question_answer.answer }}
-            </li>            
+            {% for survey_question in response.survey.surveyquestion_set.all %}
+                <li>
+                    <b>{{ survey_question.question }}</b>
+                    <ul>
+                    {% for response_answer in response.responseanswer_set.all %}
+                        {% if survey_question.question == response_answer.question_answer.question %}
+                        <li>{{ response_answer.question_answer.answer }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </li>
             {% endfor %}
         </ul>
     </div>
