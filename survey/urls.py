@@ -14,4 +14,7 @@ urlpatterns = [
     path("results/<int:pk>/", views.ResultsView.as_view(), name="results"),
     path("completed/", views.completed, name="completed"),
     path("<int:survey_id>/stats/", views.stats, name="stats"),
+    path(
+        "<int:survey_id>/stats/<int:reference_id>/", views.stats, name="reference_stats"
+    ),
 ]

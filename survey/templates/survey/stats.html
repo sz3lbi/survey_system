@@ -10,8 +10,45 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
     <h1>Statystyki ankiety</h1>
-    <p class="lead"><b>Tytuł:</b> {{ survey_name }}</p>
+    <p class="lead"><b>Tytuł:</b> {{ survey.name }}</p>
     <div class="container" id="chart-container" style="max-width: 600px; max-height: 600px;">
+
+        <div class="select-container">
+            <label for="reference">Dane dla grupy:</label>
+            <select class="custom-select" name="reference" id="reference">
+                <option value="0">brak</option>
+                {% for qa in rp_question_answers %}
+                <option value="{{ qa.id }}">{{ qa.question }}: {{ qa.answer }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="chart-type">Typ wykresów:</label>
+            <select class="custom-select" name="chart-type" id="chart-type">
+                <option value="pie" selected>Kołowy</option>
+                <option value="doughnut">Pierścieniowy</option>
+                <option value="bar">Kolumnowy</option>        
+            </select>
+        </div>
+
+        <script type="text/javascript">
+            $("#reference").change(function() {
+                let referenceValue = $(this).val();
+                console.log(referenceValue);
+
+                if (referenceValue == 0){
+                    window.location = "{% url 'survey:stats' survey_id=survey.id %}";
+                } else {
+                    window.location = "{% url 'survey:reference_stats' survey_id=survey.id reference_id=0 %}".replace(/0/, referenceValue);
+                }
+                           
+            });
+
+            {% if reference_id %}
+            $("#reference").val({{ reference_id }});
+            {% endif %}
+        </script>
+
     {% for title, labels, data in zipped_data %}
         {% if forloop.first %}
         <!-- Charts config -->
@@ -33,48 +70,112 @@
 
                 rgba_colors.push(new_color);
             }
+
+            var ctx = [];
+            var data = [];
+            var options = [];
+            var charts = [];
+
+            function setSelectedChartType() {
+                let chartType = $("#chart-type").val();
+
+                for (let i = 0; i < ctx.length; i++) {
+                    if (i in charts) {
+                        if(charts[i].config.type === chartType) {
+                            continue;                            
+                        }
+                        charts[i].destroy();
+                    }  
+
+                    switch(chartType) {
+                        case 'bar':
+                            options[i].plugins.legend.display = false;
+                            options[i].scales.y.display = true;
+                            options[i].scales.y.grid.display = true;
+
+                            if('x' in options[i].scales) {
+                                options[i].scales.x.display = true;
+                                options[i].scales.x.grid.display = true;
+                            }
+                            
+                            break;
+                        case 'pie':
+                        case 'doughnut':
+                            options[i].plugins.legend.display = true;
+                            options[i].scales.y.display = false;
+                            options[i].scales.y.grid.display = false;
+
+                            if('x' in options[i].scales) {
+                                options[i].scales.x.display = false;
+                                options[i].scales.x.grid.display = false;
+                            }
+
+                            break;
+                    }             
+
+                    charts[i] = new Chart(ctx[i], {
+                        type: chartType,
+                        data: data[i],
+                        options: options[i]
+                    });
+                }
+            }
+
+            $("#chart-type").change(setSelectedChartType);
         </script>
         {% endif %}
     
-    <canvas id="chart{{ forloop.counter }}-canvas"></canvas>
-    <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter }}-url">Pobierz wykres w PNG</a>
+    <canvas id="chart{{ forloop.counter0 }}-canvas"></canvas>
+    <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter0 }}-url">Pobierz wykres w PNG</a>
     
     <script type="text/javascript">
-        $( document ).ready(function() {
-            var ctx = $("#chart{{ forloop.counter }}-canvas").get(0).getContext("2d");
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: {{ labels|safe }},
-                    datasets: [
-                        {
-                            data: {{ data|safe }},
-                            borderColor: rgb_colors,
-                            borderWidth: borderWidth,
-                            backgroundColor: rgba_colors,
-                        },
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '{{ title|safe }}'
-                        },
-                        legend: {
-                            display: true,
-                            position: 'top',
-                        },
+        $(document).ready(function() {
+            ctx[{{ forloop.counter0 }}] = $("#chart{{ forloop.counter0 }}-canvas").get(0).getContext("2d");
+
+            data[{{ forloop.counter0 }}] = {
+                labels: {{ labels|safe }},
+                datasets: [
+                    {
+                        data: {{ data|safe }},
+                        borderColor: rgb_colors,
+                        borderWidth: borderWidth,
+                        backgroundColor: rgba_colors
+                    }
+                ]
+            };
+            options[{{ forloop.counter0 }}] = {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '{{ title|safe }}'
                     },
-                    animation: {
-                        onComplete: function() {
-                            var base64 = this.toBase64Image();
-                            $("#chart{{ forloop.counter }}-url").attr("href", base64).removeClass("disabled");
-                        }
-                    },    
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
                 },
-            });
+                scales: {
+                    y: {
+                        display: false,
+                        min: 0,
+                        ticks: {                            
+                            stepSize: 1
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                animation: {
+                    onComplete: function() {
+                        var base64 = this.toBase64Image();
+                        $("#chart{{ forloop.counter0 }}-url").attr("href", base64).removeClass("disabled");
+                    }
+                }  
+            };
+
+            setSelectedChartType();
         });
                     
     </script>

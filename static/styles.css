@@ -189,3 +189,7 @@
     border-left: 10px solid #dee2e6;
     height: 1rem;
   }
+
+  .select-container {
+    padding: 1rem;
+  }

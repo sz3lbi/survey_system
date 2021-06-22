@@ -129,15 +129,18 @@ def completed(request):
 
 @login_required
 @permission_required("survey.view_stats", raise_exception=True)
-def stats(request, survey_id):
+def stats(request, survey_id, reference_id=None):
     survey = get_object_or_404(Survey, pk=survey_id)
 
-    @dataclass
-    class QuestionStats:
-        question_answer: QuestionAnswer
-        reference_qa: QuestionAnswer = None
-        count: int = 0
+    # handle url with reference QuestionAnswer id
+    reference_qa = None
 
+    if reference_id:
+        reference_qa = get_object_or_404(
+            QuestionAnswer, pk=reference_id, question__respondents_particulars=True
+        )
+
+    # get list of QuestionAnswer objects with respondents particulars questions for the survey
     respondents_particulars_questions = Question.objects.filter(
         respondents_particulars=True
     )
@@ -150,6 +153,18 @@ def stats(request, survey_id):
             for question_answer in survey_question.question.questionanswer_set.all():
                 rp_question_answers.append(question_answer)
 
+    # check if reference_qa is valid for the survey
+    if reference_qa and not reference_qa in rp_question_answers:
+        reference_qa = None
+
+    # create dataclass to keep stats in simple object
+    @dataclass
+    class QuestionStats:
+        question_answer: QuestionAnswer
+        reference_qa: QuestionAnswer = None
+        count: int = 0
+
+    # create list of QuestionStats objects with every possible combination for the survey
     stats_list = []
 
     for response in survey.response_set.all():
@@ -192,6 +207,8 @@ def stats(request, survey_id):
                         ):
                             question_stats.count += 1
 
+    stats_list = [x for x in stats_list if x.count > 0]
+
     titles = []
     labels_set = []
     data_set = []
@@ -204,11 +221,9 @@ def stats(request, survey_id):
 
         for question_stats in stats_list:
             if survey_question.question == question_stats.question_answer.question:
-                if question_stats.reference_qa is None:
+                if question_stats.reference_qa == reference_qa:
                     labels.append(question_stats.question_answer.answer.text)
                     data.append(question_stats.count)
-                else:
-                    pass
 
         if labels and data:
             titles.append(survey_question.question)
@@ -217,9 +232,15 @@ def stats(request, survey_id):
 
     zipped_data = zip(titles, labels_set, data_set)
 
+    max_len = 0
+    if data_set:
+        max_len = len(max(data_set, key=len))
+
     context = {
-        "survey_name": survey.name,
-        "max_len": len(max(data_set, key=len)),
+        "survey": survey,
+        "rp_question_answers": rp_question_answers,
+        "reference_id": reference_id,
+        "max_len": max_len,
         "zipped_data": zipped_data,
     }
 
