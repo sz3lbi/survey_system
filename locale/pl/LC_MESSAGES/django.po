@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-24 23:01+0200\n"
+"POT-Creation-Date: 2021-06-24 23:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,14 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: sm_project/settings.py:114
+msgid "Polish"
+msgstr "Polski"
+
+#: sm_project/settings.py:115
+msgid "English"
+msgstr "Angielski"
 
 #: survey/apps.py:8
 msgid "Satisfaction survey"
@@ -176,7 +184,7 @@ msgstr "cyfry i litery"
 msgid "characters"
 msgstr "znaków"
 
-#: survey/templates/survey/detail.html:49 templates/lang.html:19
+#: survey/templates/survey/detail.html:49 templates/lang.html:22
 msgid "Send"
 msgstr "Wyślij"
 
@@ -265,15 +273,15 @@ msgid "To vote in a survey, you must go to the corresponding subpage."
 msgstr ""
 "Aby zagłosować w ankiecie musisz przejść do podstrony jej odpowiadającej."
 
-#: survey/views.py:71
+#: survey/views.py:70
 msgid "Incorrect bill number format"
 msgstr "Błędny format numeru rachunku"
 
-#: survey/views.py:83
+#: survey/views.py:82
 msgid "You have already completed this survey using the bill number provided"
 msgstr "Już wypełniłeś tę ankietę przy użyciu podanego numeru rachunku"
 
-#: survey/views.py:105
+#: survey/views.py:104
 msgid "You did not choose an answer to one of the questions"
 msgstr "Nie wybrałeś odpowiedzi na jedno z pytań"
 
