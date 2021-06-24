@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-24 22:35+0200\n"
+"POT-Creation-Date: 2021-06-24 23:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,7 +176,7 @@ msgstr "cyfry i litery"
 msgid "characters"
 msgstr "znaków"
 
-#: survey/templates/survey/detail.html:49
+#: survey/templates/survey/detail.html:49 templates/lang.html:19
 msgid "Send"
 msgstr "Wyślij"
 
@@ -300,6 +300,10 @@ msgstr "Logowanie"
 msgid "Sign up"
 msgstr "Rejestracja"
 
+#: templates/base.html:80
+msgid "Change website language"
+msgstr "Zmień język strony"
+
 #: templates/home.html:6
 msgid "Homepage"
 msgstr "Strona główna"
@@ -307,6 +311,10 @@ msgstr "Strona główna"
 #: templates/home.html:8
 msgid "Welcome to the website of XYZ restaurant!"
 msgstr "Witamy w serwisie internetowym obsługującym restaurację XYZ!"
+
+#: templates/lang.html:5
+msgid "Language selection"
+msgstr "Wybór języka"
 
 #: users/templates/users/login.html:16
 msgid "Forgot your password?"

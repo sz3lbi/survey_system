@@ -1,0 +1,24 @@
+{% extends "base_menu.html" %}
+{% load i18n %}
+
+{% block content %}
+    <h1>{% translate "Language selection" %}</h1>
+
+    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <input name="next" type="hidden" value="/i18n/setlang/">
+        <fieldset>
+            <select name="language" class="custom-select">
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                        {{ language.name_local }} ({{ language.code }})
+                    </option>
+                {% endfor %}
+            </select>
+        </fieldset>
+        <br>
+        <button type="submit" class="btn btn-primary">{% translate "Send" %}</button>
+    </form>
+{% endblock content %}

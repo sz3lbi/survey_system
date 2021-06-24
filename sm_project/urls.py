@@ -23,6 +23,8 @@ urlpatterns = [
     path("", include("users.urls")),
     path("admin/", admin.site.urls),
     path("", views.home, name="home"),
+    path("lang/", views.lang, name="lang"),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 if apps.is_installed("survey"):
