@@ -1,8 +1,9 @@
 {% extends "base_menu.html" %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Strona główna</h1>
+    <h1>{% translate "Homepage" %}</h1>
 
-    <p>Witamy w serwisie internetowym obsługującym restaurację XYZ!</p>
+    <p>{% translate "Welcome to the website of XYZ restaurant!" %}</p>
 {% endblock content %}

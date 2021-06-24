@@ -1,16 +1,17 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Lista ankiet</h1>
+    <h1>{% translate "List of surveys" %}</h1>
 
-    <p>Kliknij w tytuł ankiety, aby wysunąć listę pytań wraz z odpowiedziami.</p>
+    <p>{% translate "Click on a survey title to display a list of questions with answers." %}</p>
 
     {% for survey in survey_list_id_asc %}
     <details>
         <summary>{{ survey }}</summary>
 
         {% if perms.survey.view_stats %}
-        <p><a href="{% url 'survey:stats' survey.id %}">Przejdź do statystyk</a></p>
+        <p><a href="{% url 'survey:stats' survey.id %}">{% translate "Go to statistics" %}</a></p>
         {% endif %}
 
         <ol>
@@ -25,7 +26,7 @@
         </ol>
     </details>        
     {% empty %}
-    <p>Brak dostępnych ankiet.</p>
+    <p>{% translate "No surveys available." %}</p>
     {% endfor %}
 
     <script>

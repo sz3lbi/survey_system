@@ -1,4 +1,5 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 {% load custom_template_tags %}
 
 {% block content %}
@@ -9,25 +10,25 @@
     <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-    <h1>Statystyki ankiety</h1>
-    <p class="lead"><b>Tytuł:</b> {{ survey.name }}</p>
+    <h1>{% translate "Survey statistics" %}</h1>
+    <p class="lead"><b>{% translate "Title" %}:</b> {{ survey.name }}</p>
     <div class="container" id="chart-container" style="max-width: 600px; max-height: 600px;">
 
         <div class="select-container">
-            <label for="reference">Dane dla grupy:</label>
+            <label for="reference">{% translate "Data for the group" %}:</label>
             <select class="custom-select" name="reference" id="reference">
-                <option value="0">brak</option>
+                <option value="0">{% translate "none" %}</option>
                 {% for qa in rp_question_answers %}
                 <option value="{{ qa.id }}">{{ qa.question }}: {{ qa.answer }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="select-container">
-            <label for="chart-type">Typ wykresów:</label>
+            <label for="chart-type">{% translate "Type of charts" %}:</label>
             <select class="custom-select" name="chart-type" id="chart-type">
-                <option value="pie" selected>Kołowy</option>
-                <option value="doughnut">Pierścieniowy</option>
-                <option value="bar">Kolumnowy</option>        
+                <option value="pie" selected>{% translate "Pie" %}</option>
+                <option value="doughnut">{% translate "Doughnut" %}</option>
+                <option value="bar">{% translate "Bar" %}</option>        
             </select>
         </div>
 
@@ -126,7 +127,7 @@
         {% endif %}
     
     <canvas id="chart{{ forloop.counter0 }}-canvas"></canvas>
-    <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter0 }}-url">Pobierz wykres w PNG</a>
+    <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter0 }}-url">{% translate "Download chart in PNG" %}</a>
     
     <script>
         $(document).ready(function() {
@@ -182,7 +183,7 @@
                     
     </script>
     {% empty %}
-    <div class="alert alert-dark" role="alert"><b>Brak danych do przedstawienia na wykresach.</b><br>Brak odpowiedzi na wybraną ankietę.</div>
+    <div class="alert alert-dark" role="alert">{% translate "No data to be presented in the charts." %}</div>
     {% endfor %}
     </div>
 {% endblock content %}

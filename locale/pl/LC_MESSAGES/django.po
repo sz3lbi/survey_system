@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-14 21:32+0200\n"
+"POT-Creation-Date: 2021-06-24 22:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,22 +20,351 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: survey/models.py:13
-msgid "Can see survey list \\w questions and available answers"
-msgstr "Może zobaczyć listę ankiet z pytaniami i dostępnymi odpowiedziami"
+#: survey/apps.py:8
+msgid "Satisfaction survey"
+msgstr "Badanie satysfakcji"
 
-#: survey/models.py:17
+#: survey/models.py:7
+msgid "name"
+msgstr "nazwa"
+
+#: survey/models.py:13
 msgid "Can see statistics on surveys"
 msgstr "Może zobaczyć statystyki dotyczące ankiet"
 
-#: survey/models.py:28
-msgid "Multiple choice"
-msgstr "Wielokrotny wybór"
+#: survey/models.py:16 survey/models.py:42 survey/models.py:89
+#: survey/templates/survey/completed.html:17
+msgid "survey"
+msgstr "ankieta"
 
-#: survey/models.py:31
-msgid "Respondents particulars"
-msgstr "Metryczka"
+#: survey/models.py:17
+msgid "surveys"
+msgstr "ankiety"
 
-#: survey/models.py:75
-msgid "Unlogged User"
-msgstr "Użytkownik niezalogowany"
+#: survey/models.py:24 survey/models.py:57
+msgid "text"
+msgstr "tekst"
+
+#: survey/models.py:26
+msgid "multiple choice"
+msgstr "wielokrotny wybór"
+
+#: survey/models.py:29
+msgid "respondents particulars"
+msgstr "metryczka"
+
+#: survey/models.py:33 survey/models.py:45 survey/models.py:69
+msgid "question"
+msgstr "pytanie"
+
+#: survey/models.py:34
+msgid "questions"
+msgstr "pytania"
+
+#: survey/models.py:49
+msgid "relation of survey to question"
+msgstr "relacja ankiety do pytania"
+
+#: survey/models.py:50
+msgid "relation of surveys to questions"
+msgstr "relacje ankiet do pytań"
+
+#: survey/models.py:60 survey/models.py:72
+msgid "answer"
+msgstr "odpowiedź"
+
+#: survey/models.py:61
+msgid "answers"
+msgstr "odpowiedzi"
+
+#: survey/models.py:76 survey/models.py:115
+msgid "relation of question to answer"
+msgstr "relacja pytania do odpowiedzi"
+
+#: survey/models.py:77
+msgid "relations of questions to answers"
+msgstr "relacje pytań do odpowiedzi"
+
+#: survey/models.py:84 survey/templates/survey/completed.html:16
+#: survey/templates/survey/detail.html:23
+msgid "bill number"
+msgstr "numer rachunku"
+
+#: survey/models.py:86
+msgid "user"
+msgstr "użytkownik"
+
+#: survey/models.py:97 survey/models.py:110
+msgid "response"
+msgstr "wypełniona ankieta"
+
+#: survey/models.py:98
+msgid "responses"
+msgstr "wypełnione ankiety"
+
+#: survey/models.py:103
+msgid "unlogged user"
+msgstr "użytkownik niezalogowany"
+
+#: survey/models.py:119
+msgid "answer of survey response"
+msgstr "odpowiedź na pytanie zawarte w ankiecie"
+
+#: survey/models.py:120
+msgid "answers of survey responses"
+msgstr "odpowiedzi na pytania zawarte w ankiecie"
+
+#: survey/templates/survey/choose.html:5
+#: survey/templates/survey/survey_menu.html:10
+#: survey/templates/survey/vote.html:8
+msgid "Select survey"
+msgstr "Wybierz ankietę"
+
+#: survey/templates/survey/choose.html:8
+msgid "Please select the survey you would like to complete."
+msgstr "Prosimy o wybranie ankiety, którą chciałbyś wypełnić."
+
+#: survey/templates/survey/choose.html:9
+msgid "Have your receipt number ready."
+msgstr "Przygotuj numer paragonu."
+
+#: survey/templates/survey/choose.html:19 survey/templates/survey/list.html:29
+msgid "No surveys available."
+msgstr "Brak dostępnych ankiet."
+
+#: survey/templates/survey/completed.html:5
+#: survey/templates/survey/survey_menu.html:14
+msgid "Completed surveys"
+msgstr "Wypełnione ankiety"
+
+#: survey/templates/survey/completed.html:8
+msgid "Below is a list of the surveys you have completed."
+msgstr "Poniżej znajduje się lista wypełnionych przez Ciebie ankiet."
+
+#: survey/templates/survey/completed.html:9
+msgid ""
+"In order to go to the preview of selected answers, press the proper link."
+msgstr ""
+"W celu przejścia do podglądu wybranych odpowiedzi, naciśnij odpowiedni "
+"odnośnik."
+
+#: survey/templates/survey/completed.html:18
+msgid "Show answers"
+msgstr "Pokaż odpowiedzi"
+
+#: survey/templates/survey/completed.html:23
+msgid "You did not complete any survey."
+msgstr "Nie wypełniłeś żadnej ankiety."
+
+#: survey/templates/survey/detail.html:6 survey/templates/survey/vote.html:5
+msgid "Completing a survey"
+msgstr "Wypełnianie ankiety"
+
+#: survey/templates/survey/detail.html:9 survey/templates/survey/list.html:14
+msgid "Go to statistics"
+msgstr "Przejdź do statystyk"
+
+#: survey/templates/survey/detail.html:15 survey/templates/survey/stats.html:14
+msgid "Title"
+msgstr "Tytuł"
+
+#: survey/templates/survey/detail.html:23
+msgid "numbers and letters"
+msgstr "cyfry i litery"
+
+#: survey/templates/survey/detail.html:23
+msgid "characters"
+msgstr "znaków"
+
+#: survey/templates/survey/detail.html:49
+msgid "Send"
+msgstr "Wyślij"
+
+#: survey/templates/survey/home.html:5
+#: survey/templates/survey/survey_menu.html:6 templates/base_menu.html:6
+msgid "Customer satisfaction survey"
+msgstr "Ocena satysfakcji klientów"
+
+#: survey/templates/survey/home.html:8
+msgid "In this tab you can rate your experience after visiting our restaurant."
+msgstr ""
+"W tej zakładce możesz ocenić swoje doświadczenia po wizycie w naszej "
+"restauracji."
+
+#: survey/templates/survey/home.html:9
+msgid "Surveys are available without registration or logging in."
+msgstr "Ankiety dostępne są bez rejestracji i logowania."
+
+#: survey/templates/survey/home.html:10
+msgid ""
+"People with an account on our website have access to the history of the "
+"surveys they have completed."
+msgstr ""
+"Osoby posiadające konto na naszej stronie mają dostęp do historii "
+"wypełnionych przez siebie sondaży."
+
+#: survey/templates/survey/list.html:5
+#: survey/templates/survey/survey_menu.html:19
+msgid "List of surveys"
+msgstr "Lista ankiet"
+
+#: survey/templates/survey/list.html:7
+msgid "Click on a survey title to display a list of questions with answers."
+msgstr "Kliknij w tytuł ankiety, aby wysunąć listę pytań wraz z odpowiedziami."
+
+#: survey/templates/survey/results.html:5
+msgid "Survey results"
+msgstr "Wyniki ankiety"
+
+#: survey/templates/survey/results.html:7
+msgid "Selected answers"
+msgstr "Wybrane odpowiedzi"
+
+#: survey/templates/survey/results.html:25
+msgid "The survey was filled in correctly."
+msgstr "Ankieta została poprawnie wypełniona."
+
+#: survey/templates/survey/stats.html:13
+msgid "Survey statistics"
+msgstr "Statystyki ankiety"
+
+#: survey/templates/survey/stats.html:18
+msgid "Data for the group"
+msgstr "Dane dla grupy"
+
+#: survey/templates/survey/stats.html:20
+msgid "none"
+msgstr "brak"
+
+#: survey/templates/survey/stats.html:27
+msgid "Type of charts"
+msgstr "Typ wykresów"
+
+#: survey/templates/survey/stats.html:29
+msgid "Pie"
+msgstr "Kołowy"
+
+#: survey/templates/survey/stats.html:30
+msgid "Doughnut"
+msgstr "Pierścieniowy"
+
+#: survey/templates/survey/stats.html:31
+msgid "Bar"
+msgstr "Kolumnowy"
+
+#: survey/templates/survey/stats.html:130
+msgid "Download chart in PNG"
+msgstr "Pobierz wykres w PNG"
+
+#: survey/templates/survey/stats.html:186
+msgid "No data to be presented in the charts."
+msgstr "Brak danych do przedstawienia na wykresach."
+
+#: survey/templates/survey/vote.html:7
+msgid "To vote in a survey, you must go to the corresponding subpage."
+msgstr ""
+"Aby zagłosować w ankiecie musisz przejść do podstrony jej odpowiadającej."
+
+#: survey/views.py:71
+msgid "Incorrect bill number format"
+msgstr "Błędny format numeru rachunku"
+
+#: survey/views.py:83
+msgid "You have already completed this survey using the bill number provided"
+msgstr "Już wypełniłeś tę ankietę przy użyciu podanego numeru rachunku"
+
+#: survey/views.py:105
+msgid "You did not choose an answer to one of the questions"
+msgstr "Nie wybrałeś odpowiedzi na jedno z pytań"
+
+#: templates/base.html:19 templates/base.html:21 templates/base.html:32
+msgid "Restaurant XYZ"
+msgstr "Restauracja XYZ"
+
+#: templates/base.html:43
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: templates/base.html:47
+msgid "Administration panel"
+msgstr "Panel administracyjny"
+
+#: templates/base.html:52 users/templates/users/login.html:10
+#: users/templates/users/login.html:14
+#: users/templates/users/password_reset_complete.html:8
+#: users/templates/users/register.html:19
+msgid "Log in"
+msgstr "Logowanie"
+
+#: templates/base.html:55 users/templates/users/register.html:10
+msgid "Sign up"
+msgstr "Rejestracja"
+
+#: templates/home.html:6
+msgid "Homepage"
+msgstr "Strona główna"
+
+#: templates/home.html:8
+msgid "Welcome to the website of XYZ restaurant!"
+msgstr "Witamy w serwisie internetowym obsługującym restaurację XYZ!"
+
+#: users/templates/users/login.html:16
+msgid "Forgot your password?"
+msgstr "Zapomniałeś hasła?"
+
+#: users/templates/users/login.html:22
+msgid "Don't have an account yet?"
+msgstr "Nie masz jeszcze konta?"
+
+#: users/templates/users/login.html:22
+msgid "Create one now"
+msgstr "Załóż je teraz"
+
+#: users/templates/users/logout.html:5
+msgid "You have been logged out!"
+msgstr "Zostałeś wylogowany!"
+
+#: users/templates/users/logout.html:8
+msgid "Log in again"
+msgstr "Zaloguj się ponownie"
+
+#: users/templates/users/password_reset.html:14
+msgid "Recover password"
+msgstr "Odzyskaj hasło"
+
+#: users/templates/users/password_reset_complete.html:6
+msgid "The password has been changed."
+msgstr "Hasło zostało zmienione."
+
+#: users/templates/users/password_reset_confirm.html:10
+msgid "Password recovery"
+msgstr "Odzyskiwanie hasła"
+
+#: users/templates/users/password_reset_confirm.html:14
+msgid "Change password"
+msgstr "Zmień hasło"
+
+#: users/templates/users/password_reset_done.html:6
+msgid ""
+"An email with instructions on how to change your password has been sent."
+msgstr "Email z intrukcjami dotyczącymi zmiany hasła został wysłany."
+
+#: users/templates/users/register.html:14
+msgid "Create an account"
+msgstr "Załóż konto"
+
+#: users/templates/users/register.html:19
+msgid "Already have an account?"
+msgstr "Masz już konto?"
+
+#: users/views.py:15
+msgid "Your account has been created."
+msgstr "Twoje konto zostało utworzone."
+
+#: users/views.py:22
+msgid "The account is inactive and you cannot log into it."
+msgstr "Konto jest nieaktywne i nie można się na nie zalogować."
+
+#: users/views.py:23
+msgid "Please contact the administrator to activate it."
+msgstr "W celu jego aktywacji skontaktuj się z administratorem."

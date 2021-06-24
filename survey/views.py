@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.urls import reverse
 from django.db.utils import IntegrityError
 from django.views import generic
+from django.utils.translation import ugettext as _
 
 from .models import (
     Question,
@@ -67,7 +68,7 @@ def vote(request, survey_id):
                 {
                     "post_data": request.POST.lists(),
                     "survey": survey,
-                    "error_message": "Nieprawidłowy format numeru paragonu.",
+                    "error_message": _("Incorrect bill number format"),
                 },
             )
 
@@ -78,7 +79,9 @@ def vote(request, survey_id):
             {
                 "post_data": request.POST.lists(),
                 "survey": survey,
-                "error_message": "Już wypełniłeś tę ankietę przy użyciu podanego numeru paragonu.",
+                "error_message": _(
+                    "You have already completed this survey using the bill number provided"
+                ),
             },
         )
 
@@ -90,7 +93,7 @@ def vote(request, survey_id):
         question_answers = request.POST.getlist(field_name)
 
         if not question_answers:
-            response.delete()  # zmienić w razie pomysłu
+            response.delete()  # change if you have an idea
 
             return render(
                 request,
@@ -98,7 +101,9 @@ def vote(request, survey_id):
                 {
                     "post_data": request.POST.lists(),
                     "survey": survey,
-                    "error_message": "Nie wybrałeś odpowiedzi na jedno z pytań.",
+                    "error_message": _(
+                        "You did not choose an answer to one of the questions"
+                    ),
                 },
             )
 

@@ -1,21 +1,22 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block menu %}
     <li class="nav-item">
-        <a class="nav-link active" href="{% url 'survey:home' %}">Ocena satysfakcji klientów</a>
+        <a class="nav-link active" href="{% url 'survey:home' %}">{% translate "Customer satisfaction survey" %}</a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'survey:choose' %}">Wybierz ankietę</a>
+        <a class="nav-link" href="{% url 'survey:choose' %}">{% translate "Select survey" %}</a>
     </li>
     {% if user.is_authenticated %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'survey:completed' %}">Wypełnione ankiety</a>
+        <a class="nav-link" href="{% url 'survey:completed' %}">{% translate "Completed surveys" %}</a>
     </li>
 
         {% if perms.survey.view %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'survey:list' %}">Lista ankiet</a>
+            <a class="nav-link" href="{% url 'survey:list' %}">{% translate "List of surveys" %}</a>
         </li>
         {% endif %}
     {% endif %}

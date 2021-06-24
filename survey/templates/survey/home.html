@@ -1,10 +1,12 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Ocena satysfakcji klientów</h1>
+    <h1>{% translate "Customer satisfaction survey" %}</h1>
 
     <p>
-        W tej zakładce możesz ocenić swoje doświadczenia po wizycie w naszej restauracji.<br>
-        Ankiety dostępne są <b>bez rejestracji i logowania</b>. Osoby posiadające konto na naszej stronie mają dostęp do historii wypełnionych przez siebie sondaży.
+        {% translate "In this tab you can rate your experience after visiting our restaurant." %}<br>
+        {% translate "Surveys are available without registration or logging in." %}
+        {% translate "People with an account on our website have access to the history of the surveys they have completed." %}
     </p>
 {% endblock content %}

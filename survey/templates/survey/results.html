@@ -1,9 +1,10 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Wyniki ankiety</h1>
+    <h1>{% translate "Survey results" %}</h1>
     {% if user == response.user %}
-    <p class="lead">Wybrane przez Ciebie odpowiedzi:</p>
+    <p class="lead">{% translate "Selected answers" %}:</p>
     <div class="container">
         <ul>
             {% for survey_question in response.survey.surveyquestion_set.all %}
@@ -21,7 +22,7 @@
         </ul>
     </div>
     {% else %}
-    <p>Ankieta została poprawnie wypełniona.</p>
+    <p>{% translate "The survey was filled in correctly." %}</p>
     {% endif %}
 
 {% endblock content %}

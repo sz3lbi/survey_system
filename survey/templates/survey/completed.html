@@ -1,22 +1,26 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Wypełnione ankiety</h1>
+    <h1>{% translate "Completed surveys" %}</h1>
 
-    <p>Poniżej znajduje się lista wypełnionych przez Ciebie ankiet. W celu przejścia do podglądu wybranych odpowiedzi, naciśnij odpowiedni odnośnik.</p>
+    <p>
+        {% translate "Below is a list of the surveys you have completed." %}
+        {% translate "In order to go to the preview of selected answers, press the proper link." %}
+    </p>
 
     {% if user_responses %}
         <ol>
         {% for response in user_responses %}
             <li><p>
-                Nr paragonu: {{ response.bill_no }}<br>
-                Ankieta: {{ response.survey }}<br>
-                <a href="{% url 'survey:results' response.id %}">Pokaż odpowiedzi</a>
+                {% translate "bill number"|capfirst %}: {{ response.bill_no }}<br>
+                {% translate "survey"|capfirst %}: {{ response.survey }}<br>
+                <a href="{% url 'survey:results' response.id %}">{% translate "Show answers" %}</a>
             </p></li>
         {% endfor %}
         </ol> 
     {% else %}
-        <p>Nie wypełniłeś żadnej ankiety.</p>
+        <p>{% translate "You did not complete any survey." %}</p>
     {% endif %}
     
 {% endblock content %}

@@ -1,11 +1,12 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 
 {% block content %}
-    <h1>Wybierz ankietę</h1>
+    <h1>{% translate "Select survey" %}</h1>
 
     <p>
-        Prosimy o wybranie ankiety, którą chciałbyś wypełnić.
-        Przygotuj numer paragonu.
+        {% translate "Please select the survey you would like to complete." %}
+        {% translate "Have your receipt number ready." %}
     </p>
 
     {% if survey_list_name_asc %}
@@ -15,6 +16,6 @@
     {% endfor %}
     </ul>
     {% else %}
-        <p>Brak dostępnych ankiet.</p>
+        <p>{% translate "No surveys available." %}</p>
     {% endif %}
 {% endblock content %}

@@ -1,17 +1,18 @@
 {% extends "survey/survey_menu.html" %}
+{% load i18n %}
 {% load custom_template_tags %}
 
 {% block content %}
-    <h1>Wypełnianie ankiety</h1>
+    <h1>{% translate "Completing a survey" %}</h1>
 
     {% if perms.survey.view_stats %}
-    <p><a href="{% url 'survey:stats' survey.id %}">Przejdź do statystyk</a></p>
+    <p><a href="{% url 'survey:stats' survey.id %}">{% translate "Go to statistics" %}</a></p>
     {% endif %}
 
     <form action="{% url 'survey:vote' survey.id %}" method="post">
         {% csrf_token %}
         <fieldset>
-            <legend><p class="lead"><b>Tytuł:</b> {{ survey }}</p></legend>
+            <legend><p class="lead"><b>{% translate "Title" %}:</b> {{ survey }}</p></legend>
 
             {% if error_message %}
             <div class="alert alert-danger" role="alert">
@@ -19,7 +20,7 @@
             </div>
             {% endif %}
 
-            <label for="bill-no">Numer paragonu (cyfry i litery, 8 znaków):</label>
+            <label for="bill-no">{% translate "bill number"|capfirst %} ({% translate "numbers and letters" %}, 8 {% translate "characters" %}):</label>
             <input type="text" id="bill-no" name="bill-no" maxlength="8">
             
             <br><br>
@@ -45,7 +46,7 @@
             </ol>
             
         </fieldset>
-        <button type="submit" class="btn btn-primary">Wyślij</button>
+        <button type="submit" class="btn btn-primary">{% translate "Send" %}</button>
     </form>
 
     {% if post_data %}

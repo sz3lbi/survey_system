@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils.translation import ugettext as _
+
 from .forms import UserRegisterForm
 
 
@@ -10,13 +12,17 @@ def register(request):
         if form.is_valid():
             user = form.save()
 
-            messages.success(request, "Twoje konto zostało utworzone.")
+            messages.success(request, _("Your account has been created."))
 
             if not user.is_active:
                 messages.warning(
                     request,
-                    "Konto jest nieaktywne i nie można się na nie zalogować. "
-                    "W celu jego aktywacji skontaktuj się z administratorem.",
+                    " ".join(
+                        [
+                            _("The account is inactive and you cannot log into it."),
+                            _("Please contact the administrator to activate it."),
+                        ]
+                    ),
                 )
 
             return redirect("login")

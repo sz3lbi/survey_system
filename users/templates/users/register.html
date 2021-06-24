@@ -1,21 +1,22 @@
 {% extends "base_menu.html" %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Rejestracja</legend>
+                <legend class="border-bottom mb-4">{% translate "Sign up" %}</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Załóż konto</button>
+                <button class="btn btn-outline-info" type="submit">{% translate "Create an account" %}</button>
             </div>
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Masz już konto? <a class="ml-2" href="{% url 'login' %}">Zaloguj się</a>
+                {% translate "Already have an account?" %} <a class="ml-2" href="{% url 'login' %}">{% translate "Log in" %}</a>
             </small>
         </div>
     </div>
