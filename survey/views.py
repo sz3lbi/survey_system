@@ -1,3 +1,4 @@
+from django.forms import models
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
@@ -49,71 +50,71 @@ def vote(request, survey_id):
 
     survey = get_object_or_404(Survey, pk=survey_id)
 
+    user = None
+    if request.user.is_authenticated:
+        user = request.user
+
     try:
-        user = None
-        if request.user.is_authenticated:
-            user = request.user
+        bill_no_upper = request.POST["bill-no"].upper()
 
-        try:
-            bill_no_upper = request.POST["bill-no"].upper()
-
-            if re.match(r"([A-Z0-9]){8}", bill_no_upper):
-                response = Response(bill_no=bill_no_upper, user=user, survey=survey)
-                response.save()
-            else:
-                return render(
-                    request,
-                    "survey/detail.html",
-                    {
-                        "survey": survey,
-                        "error_message": "Nieprawidłowy format numeru paragonu.",
-                    },
-                )
-
-        except IntegrityError:
+        if re.match(r"([A-Z0-9]){8}", bill_no_upper):
+            response = Response(bill_no=bill_no_upper, user=user, survey=survey)
+            response.save()
+        else:
             return render(
                 request,
                 "survey/detail.html",
                 {
+                    "post_data": request.POST.lists(),
                     "survey": survey,
-                    "error_message": "Już wypełniłeś tę ankietę przy użyciu podanego numeru paragonu.",
+                    "error_message": "Nieprawidłowy format numeru paragonu.",
                 },
             )
 
-        survey_questions = survey.surveyquestion_set.all()
-        for survey_question in survey_questions:
-            question_id = survey_question.question.id
-
-            field_name = f"question{question_id}"
-            question_answers = request.POST.getlist(field_name)
-
-            for answer in question_answers:
-                selected_question_answer = (
-                    survey_question.question.questionanswer_set.get(
-                        answer_id=answer,
-                        question_id=question_id,
-                    )
-                )
-
-                response_answer = ResponseAnswer(
-                    response=response,
-                    question_answer=selected_question_answer,
-                )
-                response_answer.save()
-
-        return HttpResponseRedirect(reverse("survey:results", args=(response.id,)))
-    except (KeyError, Survey.DoesNotExist):
-
-        response.delete()  # tymczasowe rozwiązanie - do zmiany
-
+    except IntegrityError:
         return render(
             request,
             "survey/detail.html",
             {
+                "post_data": request.POST.lists(),
                 "survey": survey,
-                "error_message": "Nie wybrałeś odpowiedzi na jedno z pytań.",
+                "error_message": "Już wypełniłeś tę ankietę przy użyciu podanego numeru paragonu.",
             },
         )
+
+    survey_questions = survey.surveyquestion_set.all()
+    for survey_question in survey_questions:
+        question_id = survey_question.question.id
+
+        field_name = f"question{question_id}"
+        question_answers = request.POST.getlist(field_name)
+
+        if not question_answers:
+            response.delete()  # zmienić w razie pomysłu
+
+            return render(
+                request,
+                "survey/detail.html",
+                {
+                    "post_data": request.POST.lists(),
+                    "survey": survey,
+                    "error_message": "Nie wybrałeś odpowiedzi na jedno z pytań.",
+                },
+            )
+
+        for answer in question_answers:
+            selected_question_answer = survey_question.question.questionanswer_set.get(
+                answer_id=answer,
+                question_id=question_id,
+            )
+
+            response_answer = ResponseAnswer(
+                response=response,
+                question_answer=selected_question_answer,
+            )
+            response_answer.save()
+
+    return HttpResponseRedirect(reverse("survey:results", args=(response.id,)))
 
 
 class ResultsView(generic.DetailView):

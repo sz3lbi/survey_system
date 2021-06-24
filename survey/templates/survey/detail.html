@@ -46,5 +46,24 @@
             
         </fieldset>
         <button type="submit" class="btn btn-primary">Wyślij</button>
-        </form>
+    </form>
+
+    {% if post_data %}
+    <script>
+        $(document).ready(function() {
+            let dict = {};
+            let values;
+
+            {% for item in post_data %}
+            values = [];
+                {% for value in item.1 %}
+                values.push("{{ value }}");
+                {% endfor %}
+            dict["{{ item.0 }}"] = values;
+            {% endfor %}
+
+            restoreFormData(dict);
+        });
+    </script>
+    {% endif %}
 {% endblock content %}

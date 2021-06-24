@@ -2,7 +2,7 @@
 {% load custom_template_tags %}
 
 {% block content %}
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 
     <!-- Import D3 Scale Chromatic via CDN -->
     <script src="https://d3js.org/d3-color.v1.min.js"></script>
@@ -31,7 +31,7 @@
             </select>
         </div>
 
-        <script type="text/javascript">
+        <script>
             $("#reference").change(function() {
                 let referenceValue = $(this).val();
                 console.log(referenceValue);
@@ -52,7 +52,7 @@
     {% for title, labels, data in zipped_data %}
         {% if forloop.first %}
         <!-- Charts config -->
-        <script type="text/javascript">
+        <script>
             const borderWidth = 1;
             const colorScale = d3.interpolateWarm;
             const colorRangeInfo = {
@@ -128,7 +128,7 @@
     <canvas id="chart{{ forloop.counter0 }}-canvas"></canvas>
     <a download='chart' href="#" class="btn btn-dark btn-sm disabled" id="chart{{ forloop.counter0 }}-url">Pobierz wykres w PNG</a>
     
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
             ctx[{{ forloop.counter0 }}] = $("#chart{{ forloop.counter0 }}-canvas").get(0).getContext("2d");
 
