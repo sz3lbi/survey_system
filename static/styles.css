@@ -15,11 +15,6 @@ p {
   margin-bottom: 1rem;
 }
 
-a {
-  /*color: #f1e7e7;*/
-  color:black
-}
-
 a:hover {
   color: #0056b3;
 }
@@ -192,4 +187,17 @@ body {
 
 .select-container {
   padding: 1rem;
+}
+
+#custom-footer
+{
+  position:fixed;
+  bottom:0;
+  right:5%;
+}
+
+@media(max-width: 900px) {
+  #custom-footer {
+    visibility: hidden;
+  }
 }

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "survey",
     "captcha",
     "crispy_forms",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
