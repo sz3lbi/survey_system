@@ -1,4 +1,4 @@
-Django==3.2.12
+Django==3.2.13
 django-recaptcha==2.0.6
 django-crispy-forms==1.11.2
 django-modeltranslation==0.17.2
